@@ -1,0 +1,11 @@
+C:\Users\mxgai\IdeaProjects\Rust\rust_monopoly_tablet_2\target\debug\deps\getrandom-60ce90fab31a9998.rmeta: C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\lib.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\error.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\util.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\error_impls.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\windows.rs
+
+C:\Users\mxgai\IdeaProjects\Rust\rust_monopoly_tablet_2\target\debug\deps\libgetrandom-60ce90fab31a9998.rlib: C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\lib.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\error.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\util.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\error_impls.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\windows.rs
+
+C:\Users\mxgai\IdeaProjects\Rust\rust_monopoly_tablet_2\target\debug\deps\getrandom-60ce90fab31a9998.d: C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\lib.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\error.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\util.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\error_impls.rs C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\windows.rs
+
+C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\lib.rs:
+C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\error.rs:
+C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\util.rs:
+C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\error_impls.rs:
+C:\Users\mxgai\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.1.14\src\windows.rs:

@@ -1,0 +1,40 @@
+Corner,GO,-1,-1,-1,-1,Corner,false
+Purple,Mediterranean Avenue,60,50,2 10 30 90 160 250,30,Color,true
+Chest,Community Chest,-1,-1,-1,-1,Chest,false
+Purple,Baltic Avenue Rd,60,50,4 20 60 180 320 450,30,Color,true
+IncomeTax,Income Tax,-1,-1,4 10,-1,IncomeTax,false
+Railroad,Reading Railroad,200,10,25 50 100 200,100,Railroad,true
+LightBlue,Oriental Avenue,100,50,6 30 90 270 400 550,50,Color,true
+Chance,Chance,-1,-1,-1,-1,Chance,false
+LightBlue,Vermont Avenue,100,50,6 30 90 270 400 550,50,Color,true
+LightBlue,Connecticut Avenue,120,50,8 40 100 300 450 600,60,Color,true
+Corner,Jail,-1,-1,-1,-1,Corner,false
+Pink,St. Charles Place,140,100,10 50 150 450 625 750,70,Color,true
+Utility,Electric Company,150,75,4 10,-1,Utility,true
+Pink,States Avenue,140,100,10 50 150 450 625 750,70,Color,true
+Pink,Virginia Avenue,160,100,12 60 180 500 700 90,80,Color,true
+Railroad,Pennsylvania Railroad,10,200,25 50 100 200,100,Railroad,true
+Orange,St. James Place,180,100,14 70 200 550 750 950,90,Color,true
+Chest,Community Chest,-1,-1,-1,-1,Chest,false
+Orange,Tennessee Avenue,180,100,14 70 200 550 750 950,90,Color,true
+Orange,New York Avenue,200,100,16 80 220 600 800 1000,100,Color,true
+Corner,Free Parking,-1,-1,-1,-1,Corner,false
+Red,Kentucky Avenue,220,150,18 90 250 700 875 1050,110,Color,true
+Chance,Chance,-1,-1,-1,-1,Chance,true
+Red,Indiana Avenue,220,150,18 90 250 700 875 1050,110,Color,true
+Railroad,B. & O. Railroad,10,200,25 50 100 200,100,RailRoad,true
+Red,Illinois Avenue,240,150,20 100 300 750 925 1100,120,Color,true
+Yellow,Atlantic Avenue,260,150,22 110 330 800 975 1150,130,Color,true
+Yellow,Ventnor Avenue,260,150,22 110 330 800 975 1150,130,Color,true
+Utility,Water Works,150,75,4 10,-1,Utility,true
+Yellow,Marvin Gardens,280,150,24 120 360 850 1025 1200,140,Color,true
+Corner,Go To Jail,-1,-1,-1,-1,Corner,false
+Green,Pacific Avenue,300,200,26 130 390 900 1100 1275,150,Color,true
+Green,North Carolina Avenue,300,200,26 130 390 900 1100 1275,150,Color,true
+Chest,Community Chest,-1,-1,-1,-1,Chest,false
+Green,Pennsylvania Avenue,320,200,28 150 450 1000 1200 1400,160,Color,true
+Railroad,Short Line,10,200,25 50 100 200,100,RailRoad,true
+Chance,Chance,-1,-1,-1,-1,Chance,false
+Blue,Park Place,350,200,35 175 500 1100 1300 1500,175,Color,true
+LuxuryTax,Luxury Tax,75,-1,-1,-1,LuxuryTax,false
+Blue,Boardwalk,400,200,50 200 600 1400 1700 2000,200,Color,true

@@ -13,7 +13,7 @@ use crate::monopoly::board_space::{
 pub enum BoardSpace {
 	PropertySpace(PropertyKind),
 	CornerSpace(CornerKind),
-	SpaceCard(CardKind),
+	CardSpace(CardKind),
 }
 
 impl BoardSpace {

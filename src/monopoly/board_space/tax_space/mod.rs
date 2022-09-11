@@ -1,5 +1,5 @@
 #[derive(Debug, Clone)]
-pub enum TaxKind {
+pub enum TaxSpace {
 	IncomeTax,
 	LuxuryTax,
 }

@@ -1,26 +1,29 @@
 use std::{fs::File, io::{BufRead, BufReader}, borrow::BorrowMut, collections::HashMap};
+use std::async_iter::from_iter;
 use std::fmt::format;
 use rand::{Rng, thread_rng};
-use crate::monopoly::board_space::property_space::color_deed::place::Place::{MediterraneanAve, RailRoad};
-use crate::monopoly::board_space::property_space::property_kind::PropertyKind::ColorProp;
-use crate::monopoly::board_space::property_space::utility::Utility;
-use super::{
-	BOARD_PATH, 
-	TOO_MANY_DOUBLES,
-	board_space::{BoardSpace, BoardSpace::{
-		CornerSpace, PropertySpace,
-	},
-	card_space::{deck::Deck, kind::{CardKind, CardKind::{Chance, Chest}}},
-	corner_space::{CornerKind, CornerKind::{Go, GoToJail, FreeParking, Jail}},
-	property_space::{
-		utility::Utility::{WaterWorks, ElectricCompany},
-		railroad,
-		title::PropertyTitle,
-		color_deed::{color::Color, estate::Estate, place::Place},
-		property_kind::PropertyKind},
-		tax_space::TaxKind::{*}},
-	utils::helpers::{my_parsing::{*}, my_macros::{*}, my_io::{*}},
-};
+use crate::monopoly::board_space::card_space::deck::Deck;
+use crate::monopoly::board_space::corner_space::CornerKind;
+use crate::monopoly::board_space::property_space::color_deed::place::Place::{*};
+use crate::monopoly::board_space::tax_space::TaxSpace;
+use super::{BOARD_PATH, TOO_MANY_DOUBLES};
+use super::board_space::BoardSpace;
+use super::board_space::BoardSpace::{CornerSpace, CardSpace, PropertySpace};
+use super::board_space::card_space::kind::CardKind;
+use super::board_space::card_space::kind::CardKind::{Chance, Chest};
+use super::board_space::corner_space::CornerKind::{Go, GoToJail, FreeParking, Jail};
+use super::board_space::property_space::utility::Utility;
+use super::board_space::property_space::utility::Utility::{WaterWorks, ElectricCompany};
+use super::board_space::property_space::title::PropertyTitle;
+use super::board_space::property_space::color_deed::color;
+use super::board_space::property_space::color_deed::color::Color; 
+use super::board_space::property_space::color_deed::estate::Estate;
+use super::board_space::property_space::color_deed::place::Place;
+use super::board_space::property_space::property_kind::PropertyKind; 
+use super::board_space::property_space::property_kind::PropertyKind::{*};
+use super::board_space::tax_space::TaxSpace::{*};
+use super::utils::helpers::{my_parsing::{*}, my_macros::{*}, my_io::{*}};
+
 
 pub struct GameState {
 	board: Vec<BoardSpace>,
@@ -88,145 +91,51 @@ impl GameState {
 	
 	pub fn auction(&mut self, i1: &isize, x: &String) {}
 	
+	pub fn movePlayer(mut self) -> ([usize; 2], String, usize, usize) {
+		let player_name = self.player_map.get(&self.current_player).unwrap();
+		echo!("It's", player_name, "'s turn");
+		let (roll, name, old_player_location, current_player_location) = self.movePlayer();
+		let old_player_location = self.location_map.get(&self.current_player).unwrap().clone();
+		let roll: [usize; 2] = self.roll();
+		let name = self.player_map.get(&self.current_player).unwrap();
+		let current_player_location = (old_player_location + roll[0] + roll[1]) % self.board.len();
+		self.location_map.insert(self.current_player.clone(), current_player_location.clone());
+		let mut space_name = self.board[current_player_location].name.clone();
+		echo!(name.clone()," rolled ", roll[1]," + ", roll[0], " and is now at ", space_name,"\n");
+		(roll, name.to_owned(), old_player_location, current_player_location)
+	}
+	
 	pub fn take_turn(mut self) -> bool {
 		for i in 0..TOO_MANY_DOUBLES {
-			let player_name = self.player_map.get(&self.current_player).unwrap();
-			println!("It's {}'s turn", player_name);
-			let roll = self.roll();
-			let name = self.player_map.get(&self.current_player).unwrap();
-			let old_player_location = self.location_map.get(&self.current_player).unwrap().clone();
-			let current_player_location = (old_player_location + roll[0] + roll[1]) % self.board.len();
-			self.location_map.insert(self.current_player.clone(), current_player_location.clone());
-			let mut space_name = self.board[current_player_location].name.clone();
-			echo!(name.clone()," rolled ", roll[1]," + ", roll[0], " and is now at ", space_name,"\n");
+			let (roll, name, old_player_location, current_player_location) = self.movePlayer();
 			let mut current_player_balance = *self.accounts.get(&self
 			 .current_player).unwrap().borrow_mut();
-			match self.board[current_player_location] {
-				CardKind(card_kind) => {}
-				ColorSpace(mut color_deedc) => {
-					let current_player_name = self.player_map[&self.current_player].clone();
-					match &mut color_deed.deed.owner {
-						Some(owner) => {
-							let rent = 5; //self.calculate_rent(self.board[current_player_location]);
-							if current_player_balance - rent < 0 {
-								printc!(current_player_name, " can't pay up,\
-                                 and has been kicked out of the game!");
-								self.player_map.remove(&self.current_player);
-								return true;
-							}
-							self.accounts.insert(self.current_player, current_player_balance - rent);
-							self.accounts.insert(owner.clone(), self.accounts.get(owner).unwrap() + rent);
-						}
-						None => {
-							let mut deed = color_deed.deed;
-							let purchase_price = &deed.purchase_price;
-							if purchase_price <= current_player_balance
-							 && bool_in(
-								join!("Does ",current_player_name,
-                                        " want to buy ", space_name, 
-                                        "?\nPrice: ", purchase_price,
-                                        "\nbalance: ", current_player_balance)) {
-								deed.owner = Option::from(self.current_player);
-								self.accounts.insert(
-									self.current_player,
-									current_player_balance - purchase_price);
-								printc!(current_player_name, " has purchased ", space_name,
-                                "\nRemaining balance: $", self.accounts.get(&self.current_player).unwrap());
-							} else {
-								self.auction(purchase_price, player_name);
-								// (&mut self, bidders: &mut Vec<(&str, isize)>, deed: &Deed)
-							}
-						}
-					}
-				}
-				CornerSpace(corner) => {}
-				TaxSpace(tax) => {}
-				UtilSpace(utility) => {}
-				RailSpace(railroad) => {}
-				_ => {}
+			match &self.board[current_player_location] {
+				CornerSpace(conrner_kind) => self.take_corner_urn(),
+				PropertySpace(property_kind) => self.take_property_turn(),
+				CardSpace(card_kind) => { match card_kind {
+						Chance => self.take_card_turn(),
+						Chest => self.take_card_turn(),
+				}},
+				LuxuryTax => self.take_tax_turn(LuxuryTax), // $75
+				IncomeTax => self.take_tax_turn(LuxuryTax), // 15% or $200
 			}
-			if roll[0] == roll[1] {
-				println!("You rolled doubles, roll again!");
-				continue;
-			} else {
-				break;
+			if Self.jail_check(roll){
+				break
 			}
 		}
-		return false;
+		false
 	}
-		/*match &space.subtype {
-		
+	
+	fn jail_check(roll: [usize; 2]) -> ! {
+		if roll[0] == roll[1] {
+			println!("You rolled doubles, roll again!");
+			true
+		} 
+		false
 	}
-		_kind::
-		ColorSpace(color_deed { space: _, deed, color: _color, houses: _, }) => {
-			match &deed.owner {
-				Some(_non_banker) => {
-					printc!("you owe ", _non_banker, " money");
-				}
-				None => {
-					let bidders = game_board.get_bidders();
-					match auction(bidders, deed) {
-						Some((mut winner, amount)) => {
-							ownership_map.insert(deed.name.clone(), winner.clone());
-							player_map.get(deed.name.as_str()).unwrap().setMoney(-1 * amount);
-						}
-						_ => println!("Nobody bought {}", deed),
-					};
-				}
-			};
-		}
-		_ => {} //other kinds of spaces
-	}
-	   fn auction<'a>(deed: Deed ) -> Option<(String, isize)> {
-			// &mut self, bidders: &mut Vec<(&str, isize)>
-			let mut player = bidders[0].0;
-			let mut player_index = bidders[0].1;
-			let mut i = 0;
-			let mut highest_bid = deed.purchase_price;
-			let mut num_players = bidders.len();
-			while bidders.len() > 1 {
-				i %= bidders.len();
-				player = bidders[0].0;
-				let mut quit = false;
-				if player.money >= highest_bid
-					&&
-					bool_in(concat!(
-					"Does ", self.player_map.get(&i), " want to continue to bid?",
-					"\nhighest bid: ", highest_bid,
-					"\nBalance: ", player.money).as_ref()) {
-					let mut bid;
-					loop {
-						println!("How much do you want to pay?");
-						bid = int_in();
-						if bid > highest_bid {
-							println!("{} is higher than {}, all good", highest_bid, bid);
-							highest_bid = bid;
-							break;
-						} else if bool_in(concat!(
-						"$", bid, " is not higher than $", highest_bid, ".",
-						" Quit bidding?").as_ref()) {
-							break;
-						}
-					}
-					if quit {
-						bidders.remove(i);
-						i -= 1;
-					}
-				} else {
-					bidders.remove(i);
-					i -= 1;
-				}
-			}
-			if i < num_players {
-				match bool_in(concat!("All other bidders have been eliminated. ", player, ",\n\
-			do you want to buy ", deed, " for $", highest_bid, "?").as_ref()) {
-					true => Some((player.name.clone(), highest_bid)),
-					false => None,
-				}
-			} else {
-				printc!("All other bidders have been eliminated.\n", player.name,
-			 ", you have purchased ", deed, " for $", highest_bid,"!");
-				Some((player.name.clone(), highest_bid))
-			}
-		}*/
+	pub fn take_card_turn() -> () {}
+	pub fn take_corner_turn() -> () {}
+	pub fn take_property_turn() -> () {}
+	pub fn take_tax_turn() -> () {}
 }

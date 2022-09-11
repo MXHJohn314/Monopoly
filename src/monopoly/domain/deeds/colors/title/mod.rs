@@ -1,6 +1,7 @@
+/// pub(crate) mod color {
 use std::fmt;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, Eq, PartialOrd, PartialEq)]
 pub struct PropertyTitle {
 	pub(crate) owner: Option<usize>,
 	pub(crate) purchase_price: usize,

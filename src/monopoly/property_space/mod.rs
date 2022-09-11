@@ -1,5 +1,5 @@
 use crate::monopoly::board_space::property_space::{
-	color_deed::color::Color,
+	color_deed::color::color,
 	utility::Utility::{
 		ElectricCompany,
 		WaterWorks,
